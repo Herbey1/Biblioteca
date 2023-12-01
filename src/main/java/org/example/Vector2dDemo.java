@@ -13,6 +13,9 @@ public class Vector2dDemo {
         this.y = y;
     }
 
+    public Vector2dDemo() {
+    }
+
     public double getX() {
         return x;
     }

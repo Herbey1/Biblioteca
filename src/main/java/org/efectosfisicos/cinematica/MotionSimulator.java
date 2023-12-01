@@ -1,7 +1,8 @@
 package org.efectosfisicos.cinematica;
 import org.example.Vector2dDemo;
+import org.efectosfisicos.dinamica.Force;
 public class MotionSimulator {
-    public static void applyForce(Particle particle, Vector2dDemo force) {
+    public static void applyForce(Particle particle, Force force) {
         particle.applyForce(force);
     }
 
@@ -17,13 +18,13 @@ public class MotionSimulator {
 
     public static void main(String[] args) {
         // Crear una partícula de ejemplo
-        Particle particle = new Particle(1.0, new Vector2dDemo(0, 0), new Vector2dDemo(2, 3));
+        Particle particle = new Particle(1.0, new Vector2dDemo(0, 0), new Vector2dDemo(2, 3), 180);
 
         System.out.println("Estado inicial de la particula:");
         System.out.println(particle);
 
         // Aplicar una fuerza constante en el eje X
-        Vector2dDemo constantForce = new Vector2dDemo(1, 0);
+        Force constantForce = new Force(new Vector2dDemo(1,0),0.0);
         applyForce(particle, constantForce);
 
         // Simular el movimiento durante 5 segundos con pasos de 0.1 segundos

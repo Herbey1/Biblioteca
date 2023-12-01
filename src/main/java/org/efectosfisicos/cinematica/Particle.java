@@ -1,17 +1,19 @@
 package org.efectosfisicos.cinematica;
 import org.example.Vector2dDemo;
+import org.efectosfisicos.dinamica.Force;
 public class Particle {
-
     private double mass;
     private Vector2dDemo position;
     private Vector2dDemo velocity;
     private Vector2dDemo acceleration;
+    private double orientation; //radianes
 
-    public Particle(double mass, Vector2dDemo position, Vector2dDemo velocity) {
+    public Particle(double mass, Vector2dDemo position, Vector2dDemo velocity, double orientation) {
         this.mass = mass;
         this.position = position;
         this.velocity = velocity;
         this.acceleration = new Vector2dDemo(0, 0);
+        this.orientation = orientation;
     }
 
     public double getMass() {
@@ -29,14 +31,24 @@ public class Particle {
     public Vector2dDemo getAcceleration() {
         return acceleration;
     }
+    public double getOrientation(){
+        return orientation;
+    }
 
     public void setAcceleration(Vector2dDemo acceleration) {
         this.acceleration = acceleration;
     }
-    public void applyForce(Vector2dDemo force){
+    public void applyForce(Force appliedForce){
+        Vector2dDemo force = appliedForce.getForce();
+        double torque = appliedForce.getTorque();
         // F = ma -> a = F/m
         Vector2dDemo newAcceleration = force.scale(1/mass);
         acceleration = acceleration.add(newAcceleration);
+
+        //Torque = I * alpha
+        double momentOfInertia = 0.5 * mass * mass;
+        double angularAcceleration = torque / momentOfInertia;
+        orientation += angularAcceleration;
     }
     public void update(double time) {
         // Actualizar velocidad y posición usando las ecuaciones de movimiento
@@ -58,24 +70,5 @@ public class Particle {
                 ", velocidad=" + velocity +
                 ", aceleracion=" + acceleration +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        // Crear una partícula de ejemplo
-        Particle particle = new Particle(1.0, new Vector2dDemo(0, 0), new Vector2dDemo(2, 3));
-
-        System.out.println("Estado inicial de la particula:");
-        System.out.println(particle);
-
-        // Aplicar una aceleración
-        Vector2dDemo acceleration = new Vector2dDemo(1, 1);
-        particle.setAcceleration(acceleration);
-
-        // Actualizar la partícula después de un intervalo de tiempo
-        double timeInterval = 1.0;
-        particle.update(timeInterval);
-
-        System.out.println("\nEstado de la particula despues de la simulacion:");
-        System.out.println(particle);
     }
 }
